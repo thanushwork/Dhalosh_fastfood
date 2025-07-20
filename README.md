@@ -51,74 +51,362 @@ A modern, production-ready restaurant ordering website with MySQL database integ
 
 Follow these steps to run the project completely FREE:
 
+### **📋 Prerequisites**
+Before starting, make sure you have:
+- **Node.js** (v16 or higher) - [Download here](https://nodejs.org/)
+- **Git** - [Download here](https://git-scm.com/)
+- **Code Editor** (VS Code recommended) - [Download here](https://code.visualstudio.com/)
+
 #### **Step 1: Clone and Setup Project**
 ```bash
-# 1. Clone the repository
+# 1. Clone the repository (replace with your actual repo URL)
 git clone <your-repo-url>
 cd dhaloesh-fast-food
 
-# 2. Install frontend dependencies
+# 2. Install frontend dependencies (this may take 2-3 minutes)
 npm install
 
-# 3. Setup backend
+# 3. Setup backend dependencies
 cd backend
 npm install
 cd ..
 ```
 
-#### **Step 2: FREE Database Setup (PlanetScale)**
-1. **Go to [planetscale.com](https://planetscale.com)**
-2. **Create FREE account** (No credit card required)
+#### **Step 2: FREE Database Setup (PlanetScale - Recommended)**
+
+**🌟 PlanetScale Setup (100% FREE):**
+1. **Visit [planetscale.com](https://planetscale.com)**
+2. **Sign up with GitHub** (No credit card required)
 3. **Create new database:**
    - Database name: `dhaloesh-fastfood`
-   - Region: Choose closest to you
+   - Region: Choose closest to you (e.g., `us-east`, `ap-south`)
 4. **Get connection details:**
+   - Click on your database
    - Go to "Connect" tab
-   - Select "Node.js"
-   - Copy the connection string
+   - Select "Connect with: Node.js"
+   - Copy the connection details (host, username, password)
+
+**📝 Example Connection Details:**
+```
+Host: aws.connect.psdb.cloud
+Username: xxxxxxxxxx
+Password: pscale_pw_xxxxxxxxxx
+Database: dhaloesh-fastfood
+```
 
 #### **Step 3: Backend Environment Setup**
 ```bash
-# Create backend environment file
+# 1. Navigate to backend folder
 cd backend
-cp .env.example .env
 
-# Edit .env file with your PlanetScale credentials:
-# DB_HOST=your_planetscale_host
-# DB_USER=your_planetscale_username  
-# DB_PASSWORD=your_planetscale_password
-# DB_NAME=dhaloesh-fastfood
-# JWT_SECRET=your_super_secret_jwt_key_here
-# PORT=3001
+# 2. Create environment file from example
+cp .env.example .env
+```
+
+**Edit the `.env` file with your database credentials:**
+```env
+# Database Configuration (Replace with your PlanetScale details)
+DB_HOST=aws.connect.psdb.cloud
+DB_USER=your_planetscale_username
+DB_PASSWORD=your_planetscale_password
+DB_NAME=dhaloesh-fastfood
+
+# JWT Secret (Generate a random string)
+JWT_SECRET=your_super_secret_jwt_key_here_make_it_long_and_random
+
+# Server Configuration
+PORT=3001
+
+# CORS Configuration
+FRONTEND_URL=http://localhost:5173
+
+# WhatsApp Configuration
+WHATSAPP_API_URL=https://api.whatsapp.com/send
+RESTAURANT_PHONE=9840650939
+```
+
+**🔐 Generate JWT Secret:**
+```bash
+# Option 1: Use Node.js
+node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
+
+# Option 2: Use online generator
+# Visit: https://generate-secret.vercel.app/64
 ```
 
 #### **Step 4: Database Schema Setup**
-1. **Connect to PlanetScale database**
-2. **Run the SQL commands from `supabase/migrations/20250719132825_light_stream.sql`**
-3. **Or use PlanetScale web console to import the schema**
+
+**Method 1: Using PlanetScale Console (Recommended)**
+1. **Go to your PlanetScale dashboard**
+2. **Click on your database → "Console" tab**
+3. **Copy and paste the SQL from `supabase/migrations/20250719132825_light_stream.sql`**
+4. **Execute the SQL commands**
+
+**Method 2: Using MySQL Client**
+```bash
+# If you have MySQL client installed
+mysql -h aws.connect.psdb.cloud -u your_username -p your_database < supabase/migrations/20250719132825_light_stream.sql
+```
+
+**✅ Verify Database Setup:**
+- Check if tables are created: `users`, `menu_items`, `orders`, `order_items`
+- Verify admin user exists: `admin@dhaloesh.com`
+- Confirm menu items are populated
 
 #### **Step 5: Start the Application**
 ```bash
-# Terminal 1: Start Backend
+# Terminal 1: Start Backend Server
 cd backend
 npm run dev
-# Backend will run on http://localhost:3001
+# ✅ You should see: "Server running on port 3001"
 
-# Terminal 2: Start Frontend (new terminal)
-cd .. # go back to root directory
+# Terminal 2: Start Frontend (Open NEW terminal window)
+cd dhaloesh-fast-food  # Navigate to project root
 echo "VITE_API_URL=http://localhost:3001/api" > .env
 npm run dev
-# Frontend will run on http://localhost:5173
+# ✅ You should see: "Local: http://localhost:5173"
 ```
 
 #### **Step 6: Test the Application**
-1. **Open browser:** http://localhost:5173
+1. **Open browser:** [http://localhost:5173](http://localhost:5173)
 2. **Test admin login:**
    - Email: admin@dhaloesh.com
    - Password: admin123
-3. **Create customer account and place test order**
+3. **Test customer features:**
+   - Create new customer account
+   - Browse menu items
+   - Add items to cart
+   - Place test order
+   - Check admin dashboard for order
 
 ---
+
+## 🔧 **Troubleshooting Common Issues**
+
+### **❌ Backend Won't Start**
+```bash
+# Check if all dependencies are installed
+cd backend
+npm install
+
+# Check environment variables
+cat .env
+
+# Test database connection
+npm run dev
+# Look for "Server running on port 3001" message
+```
+
+### **❌ Frontend Can't Connect to Backend**
+```bash
+# Check if backend is running
+curl http://localhost:3001/api/menu
+# Should return JSON response
+
+# Check frontend environment
+cat .env
+# Should contain: VITE_API_URL=http://localhost:3001/api
+
+# Restart frontend
+npm run dev
+```
+
+### **❌ Database Connection Issues**
+1. **Verify database credentials in `backend/.env`**
+2. **Check if PlanetScale database is active**
+3. **Ensure database schema is imported**
+4. **Test connection from PlanetScale console**
+
+### **❌ CORS Errors**
+```bash
+# Make sure backend .env has correct frontend URL
+FRONTEND_URL=http://localhost:5173
+
+# Restart backend server
+cd backend
+npm run dev
+```
+
+---
+
+## 🌐 **FREE Deployment Guide**
+
+### **🚀 Deploy Frontend (Netlify - FREE)**
+
+#### **Step 1: Prepare for Deployment**
+```bash
+# 1. Build the frontend
+npm run build
+
+# 2. Test the build locally
+npm run preview
+```
+
+#### **Step 2: Deploy to Netlify**
+1. **Go to [netlify.com](https://netlify.com)**
+2. **Sign up with GitHub**
+3. **Click "Add new site" → "Import an existing project"**
+4. **Connect your GitHub repository**
+5. **Configure build settings:**
+   - Build command: `npm run build`
+   - Publish directory: `dist`
+   - Environment variables:
+     ```
+     VITE_API_URL=https://your-backend-url.railway.app/api
+     ```
+6. **Deploy site**
+
+### **🚀 Deploy Backend (Railway - FREE)**
+
+#### **Step 1: Prepare Backend**
+```bash
+# Add start script to backend/package.json
+{
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  }
+}
+```
+
+#### **Step 2: Deploy to Railway**
+1. **Go to [railway.app](https://railway.app)**
+2. **Sign up with GitHub**
+3. **Click "New Project" → "Deploy from GitHub repo"**
+4. **Select your repository**
+5. **Configure settings:**
+   - Root directory: `backend`
+   - Start command: `npm start`
+6. **Add environment variables:**
+   ```
+   DB_HOST=your_planetscale_host
+   DB_USER=your_planetscale_username
+   DB_PASSWORD=your_planetscale_password
+   DB_NAME=dhaloesh-fastfood
+   JWT_SECRET=your_jwt_secret
+   PORT=3001
+   FRONTEND_URL=https://your-netlify-site.netlify.app
+   ```
+7. **Deploy**
+
+### **🔄 Update Frontend with Backend URL**
+1. **Get your Railway backend URL** (e.g., `https://your-app.railway.app`)
+2. **Update Netlify environment variables:**
+   ```
+   VITE_API_URL=https://your-app.railway.app/api
+   ```
+3. **Redeploy frontend**
+
+---
+
+## 💰 **Cost Breakdown (100% FREE Setup)**
+
+| Service | Free Tier | Limits | Perfect For |
+|---------|-----------|--------|-------------|
+| **PlanetScale** | ✅ FREE | 1GB storage, 1B reads/month | Small to medium restaurants |
+| **Netlify** | ✅ FREE | 100GB bandwidth/month | Frontend hosting |
+| **Railway** | ✅ FREE | $5 credit/month | Backend hosting |
+| **Domain** | 💰 Optional | $10-15/year | Custom branding |
+| **Total** | **₹0/month** | Scales with business | **Perfect for startups** |
+
+---
+
+## 🔗 **Google Reviews Integration**
+
+### **🌟 Automatic Google Reviews (Advanced)**
+
+#### **Step 1: Get Google Places API Key**
+1. **Go to [Google Cloud Console](https://console.cloud.google.com)**
+2. **Create new project or select existing**
+3. **Enable "Places API"**
+4. **Create API key**
+5. **Restrict API key to your domain**
+
+#### **Step 2: Find Your Place ID**
+1. **Use [Place ID Finder](https://developers.google.com/maps/documentation/places/web-service/place-id)**
+2. **Search for your restaurant**
+3. **Copy the Place ID**
+
+#### **Step 3: Add to Frontend**
+```javascript
+// Add to src/components/ReviewsSection.tsx
+const GOOGLE_PLACES_API_KEY = 'your_api_key_here';
+const PLACE_ID = 'your_place_id_here';
+
+const fetchGoogleReviews = async () => {
+  const response = await fetch(
+    `https://maps.googleapis.com/maps/api/place/details/json?place_id=${PLACE_ID}&fields=reviews,rating&key=${GOOGLE_PLACES_API_KEY}`
+  );
+  const data = await response.json();
+  return data.result.reviews;
+};
+```
+
+#### **Step 4: Customer Review Flow**
+1. **After order completion → Send WhatsApp with review link**
+2. **Review link format:**
+   ```
+   https://search.google.com/local/writereview?placeid=YOUR_PLACE_ID
+   ```
+3. **Auto-refresh reviews every hour**
+
+---
+
+## 📱 **Mobile Testing**
+```bash
+# Find your local IP address
+# macOS/Linux:
+ifconfig | grep "inet " | grep -v 127.0.0.1
+
+# Windows:
+ipconfig | findstr IPv4
+
+# Update frontend .env for mobile testing
+VITE_API_URL=http://YOUR_LOCAL_IP:3001/api
+
+# Access from mobile: http://YOUR_LOCAL_IP:5173
+```
+
+---
+
+## 🎯 **Production Checklist**
+
+### **✅ Before Going Live:**
+- [ ] Test all functionality thoroughly
+- [ ] Add real food images to menu items
+- [ ] Configure production database
+- [ ] Set up custom domain
+- [ ] Configure WhatsApp Business API
+- [ ] Add Google Analytics
+- [ ] Set up backup strategy
+- [ ] Test payment flow
+- [ ] Verify admin dashboard
+- [ ] Test mobile responsiveness
+
+### **🔒 Security Checklist:**
+- [ ] Change default admin password
+- [ ] Use strong JWT secret
+- [ ] Enable HTTPS
+- [ ] Set up rate limiting
+- [ ] Configure CORS properly
+- [ ] Regular database backups
+
+---
+
+## 📞 **Support & Help**
+
+### **🆘 Need Help?**
+- **Restaurant Phone:** 9840650939 / 7299760102
+- **Technical Issues:** Check troubleshooting section above
+- **Database Issues:** Verify PlanetScale connection
+- **Deployment Issues:** Check environment variables
+
+### **📚 Useful Resources:**
+- [PlanetScale Documentation](https://planetscale.com/docs)
+- [Netlify Documentation](https://docs.netlify.com)
+- [Railway Documentation](https://docs.railway.app)
+- [React Documentation](https://react.dev)
+- [Node.js Documentation](https://nodejs.org/docs)
 
 ### **Step 1: Database Setup (MySQL)**
 
