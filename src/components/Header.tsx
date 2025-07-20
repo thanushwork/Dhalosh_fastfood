@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ShoppingCart, User, Menu, X, MapPin, Phone, ExternalLink, ChevronDown, Bell } from 'lucide-react';
+import { ShoppingCart, User, Menu, X, MapPin, Phone, ExternalLink, ChevronDown, Bell, Utensils, Star } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 
@@ -63,71 +63,85 @@ const Header: React.FC<HeaderProps> = ({ onAuthClick, onCartClick, currentPage, 
     <>
       <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         isScrolled 
-          ? 'bg-white/95 backdrop-blur-lg shadow-xl border-b border-orange-100' 
-          : 'bg-white/90 backdrop-blur-sm shadow-lg'
+          ? 'header-scrolled shadow-2xl' 
+          : 'header-default shadow-xl'
       }`}>
+        {/* Animated Background Elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="floating-circle floating-circle-1"></div>
+          <div className="floating-circle floating-circle-2"></div>
+          <div className="floating-circle floating-circle-3"></div>
+          <div className="floating-circle floating-circle-4"></div>
+        </div>
+        
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             {/* Logo */}
             <div 
-              className="flex-shrink-0 cursor-pointer flex items-center space-x-3 group transition-all duration-300 hover:scale-105" 
+              className="flex-shrink-0 cursor-pointer flex items-center space-x-3 group transition-all duration-500 hover:scale-110 relative z-10" 
               onClick={() => onPageChange('home')}
             >
               <div className="relative">
-                <div className="bg-gradient-to-br from-orange-500 to-red-600 p-3 rounded-xl shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:rotate-3">
-                  <svg className="h-8 w-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                  </svg>
+                <div className="logo-container group-hover:animate-wiggle">
+                  <div className="logo-glow"></div>
+                  <Utensils className="h-8 w-8 text-white relative z-10 group-hover:animate-spin-slow" />
                 </div>
-                <div className="absolute -top-1 -right-1 w-4 h-4 bg-yellow-400 rounded-full animate-pulse"></div>
+                <div className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-full animate-bounce shadow-lg">
+                  <Star className="h-3 w-3 text-white animate-pulse" />
+                </div>
+                <div className="absolute -bottom-1 -left-1 w-3 h-3 bg-gradient-to-r from-green-400 to-green-500 rounded-full animate-ping"></div>
               </div>
               <div>
-                <h1 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
+                <h1 className="text-xl sm:text-2xl font-bold logo-text group-hover:animate-pulse">
                   DHALOESH FAST FOOD
                 </h1>
-                <p className="text-xs text-gray-600 hidden sm:block font-medium">
+                <p className="text-xs text-white/80 hidden sm:block font-medium animate-fade-in">
                   🍽️ Quick Bites • 📦 Parcel Only
                 </p>
               </div>
             </div>
 
             {/* Desktop Navigation */}
-            <nav className="hidden lg:flex space-x-1">
+            <nav className="hidden lg:flex space-x-1 relative z-10">
               {navItems.map((item, index) => (
                 <button
                   key={index}
                   onClick={item.action}
-                  className="relative px-4 py-2 text-sm font-medium text-gray-700 hover:text-orange-600 transition-all duration-300 rounded-lg hover:bg-orange-50 group"
+                  className="nav-button group"
+                  style={{ animationDelay: `${index * 0.1}s` }}
                 >
-                  <span className="relative z-10">{item.label}</span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+                  <span className="relative z-10 nav-text">{item.label}</span>
+                  <div className="nav-button-bg"></div>
+                  <div className="nav-button-glow"></div>
                 </button>
               ))}
             </nav>
 
             {/* Contact Info */}
-            <div className="hidden xl:flex items-center space-x-6 text-sm">
-              <div className="flex items-center space-x-2 text-gray-600 hover:text-orange-600 transition-colors group">
-                <div className="p-2 bg-gradient-to-br from-green-400 to-green-600 rounded-lg group-hover:from-green-500 group-hover:to-green-700 transition-all duration-300 transform group-hover:scale-110 group-hover:rotate-12 shadow-lg group-hover:shadow-xl animate-pulse">
-                  <Phone className="h-4 w-4 text-white animate-bounce" />
+            <div className="hidden xl:flex items-center space-x-6 text-sm relative z-10">
+              <div className="contact-item group">
+                <div className="contact-icon-phone">
+                  <div className="contact-icon-glow-phone"></div>
+                  <Phone className="h-4 w-4 text-white relative z-10 group-hover:animate-wiggle" />
                 </div>
                 <div>
-                  <p className="font-semibold">Call Now</p>
-                  <p className="text-xs">7299760102</p>
+                  <p className="font-semibold text-white group-hover:text-green-300 transition-colors">Call Now</p>
+                  <p className="text-xs text-white/80">7299760102</p>
                 </div>
               </div>
               <a 
                 href="https://maps.app.goo.gl/3CRUtZD1EHv8yQd36" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="flex items-center space-x-2 text-gray-600 hover:text-orange-600 transition-colors group"
+                className="contact-item group"
               >
-                <div className="p-2 bg-gradient-to-br from-blue-400 to-purple-600 rounded-lg group-hover:from-blue-500 group-hover:to-purple-700 transition-all duration-300 transform group-hover:scale-110 group-hover:-rotate-12 shadow-lg group-hover:shadow-xl">
-                  <MapPin className="h-4 w-4 text-white animate-ping" />
+                <div className="contact-icon-location">
+                  <div className="contact-icon-glow-location"></div>
+                  <MapPin className="h-4 w-4 text-white relative z-10 group-hover:animate-bounce" />
                 </div>
                 <div>
-                  <p className="font-semibold">Location</p>
-                  <p className="text-xs flex items-center">
+                  <p className="font-semibold text-white group-hover:text-blue-300 transition-colors">Location</p>
+                  <p className="text-xs flex items-center text-white/80">
                     View Map <ExternalLink className="h-3 w-3 ml-1" />
                   </p>
                 </div>
@@ -135,25 +149,26 @@ const Header: React.FC<HeaderProps> = ({ onAuthClick, onCartClick, currentPage, 
             </div>
 
             {/* User Actions */}
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-3 relative z-10">
               {/* Cart Button */}
               <button
                 onClick={handleCartClick}
-                className="relative p-3 text-gray-600 hover:text-orange-600 transition-all duration-300 rounded-xl hover:bg-gradient-to-br hover:from-orange-50 hover:to-red-50 group transform hover:scale-110"
+                className="action-button group cart-button"
               >
-                <div className="relative">
-                  <ShoppingCart className="h-6 w-6 group-hover:scale-110 transition-transform duration-300 group-hover:text-orange-600" />
+                <div className="action-button-bg cart-bg"></div>
+                <div className="relative z-10">
+                  <ShoppingCart className="h-6 w-6 text-white group-hover:animate-shake transition-transform duration-300" />
                   {state.items.length > 0 && (
-                    <div className="absolute -inset-1 bg-gradient-to-r from-orange-400 to-red-500 rounded-lg blur opacity-30 group-hover:opacity-50 animate-pulse"></div>
+                    <div className="cart-glow"></div>
                   )}
                 </div>
                 {state.items.length > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs rounded-full h-6 w-6 flex items-center justify-center animate-bounce font-bold shadow-lg ring-2 ring-white">
+                  <span className="cart-counter">
                     {state.items.reduce((sum, item) => sum + item.quantity, 0)}
                   </span>
                 )}
                 {state.items.length > 0 && (
-                  <Bell className="absolute -top-2 -left-2 h-3 w-3 text-yellow-500 animate-ping" />
+                  <Bell className="cart-notification" />
                 )}
               </button>
 
@@ -161,23 +176,24 @@ const Header: React.FC<HeaderProps> = ({ onAuthClick, onCartClick, currentPage, 
               <div className="relative">
                 <button
                   onClick={() => setActiveDropdown(activeDropdown === 'user' ? null : 'user')}
-                  className="flex items-center space-x-2 p-3 text-gray-600 hover:text-orange-600 transition-all duration-300 rounded-xl hover:bg-gradient-to-br hover:from-orange-50 hover:to-red-50 group transform hover:scale-105"
+                  className="action-button group user-button"
                 >
+                  <div className="action-button-bg user-bg"></div>
                   <div className="relative">
-                    <div className="relative">
-                      <User className="h-6 w-6 group-hover:scale-110 transition-transform duration-300 group-hover:text-orange-600" />
+                    <div className="relative z-10">
+                      <User className="h-6 w-6 text-white group-hover:animate-pulse transition-transform duration-300" />
                       {isAuthenticated && (
-                        <div className="absolute -inset-1 bg-gradient-to-r from-green-400 to-blue-500 rounded-lg blur opacity-20 group-hover:opacity-40 animate-pulse"></div>
+                        <div className="user-glow"></div>
                       )}
                     </div>
                     {isAuthenticated && (
-                      <div className="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-r from-green-400 to-green-600 rounded-full border-2 border-white animate-pulse shadow-lg"></div>
+                      <div className="user-status"></div>
                     )}
                   </div>
-                  <span className="hidden sm:inline text-sm font-medium">
+                  <span className="hidden sm:inline text-sm font-medium text-white relative z-10">
                     {isAuthenticated ? user?.name?.split(' ')[0] : 'Account'}
                   </span>
-                  <ChevronDown className={`h-4 w-4 transition-transform duration-300 ${
+                  <ChevronDown className={`h-4 w-4 text-white relative z-10 transition-transform duration-300 ${
                     activeDropdown === 'user' ? 'rotate-180' : ''
                   }`} />
                 </button>
@@ -210,16 +226,14 @@ const Header: React.FC<HeaderProps> = ({ onAuthClick, onCartClick, currentPage, 
               {/* Mobile Menu Button */}
               <button
                 onClick={toggleMenu}
-                className="lg:hidden p-3 text-gray-600 hover:text-orange-600 transition-all duration-300 rounded-xl hover:bg-gradient-to-br hover:from-orange-50 hover:to-red-50 transform hover:scale-110"
+                className="lg:hidden action-button group mobile-menu-button"
               >
+                <div className="action-button-bg mobile-bg"></div>
                 <div className="relative">
                 {isMenuOpen ? 
-                  <X className="h-6 w-6 rotate-90 transition-transform duration-300 text-red-500" /> : 
-                  <Menu className="h-6 w-6 transition-transform duration-300 hover:text-orange-600" />
+                  <X className="h-6 w-6 rotate-90 transition-transform duration-300 text-white relative z-10" /> : 
+                  <Menu className="h-6 w-6 transition-transform duration-300 text-white relative z-10 group-hover:animate-pulse" />
                 }
-                  {!isMenuOpen && (
-                    <div className="absolute -inset-1 bg-gradient-to-r from-orange-400 to-red-500 rounded-lg blur opacity-0 hover:opacity-20 transition-opacity duration-300"></div>
-                  )}
                 </div>
               </button>
             </div>
@@ -227,21 +241,21 @@ const Header: React.FC<HeaderProps> = ({ onAuthClick, onCartClick, currentPage, 
 
           {/* Mobile Menu */}
           {isMenuOpen && (
-            <div className="lg:hidden border-t border-gray-200 bg-white/95 backdrop-blur-lg animate-slideInDown">
+            <div className="lg:hidden border-t border-white/20 mobile-menu animate-slideInDown">
               <nav className="py-4 space-y-1">
                 {navItems.map((item, index) => (
                   <button
                     key={index}
                     onClick={item.action}
-                    className="block w-full text-left px-4 py-3 text-sm font-medium text-gray-700 hover:text-orange-600 hover:bg-orange-50 transition-all duration-300 rounded-lg mx-2"
+                    className="block w-full text-left px-4 py-3 text-sm font-medium text-white hover:text-orange-300 hover:bg-white/10 transition-all duration-300 rounded-lg mx-2"
                   >
                     {item.label}
                   </button>
                 ))}
                 
-                <div className="border-t border-gray-200 mt-4 pt-4 px-4 space-y-3">
-                  <div className="flex items-center space-x-3 text-sm text-gray-600">
-                    <div className="p-1 bg-gradient-to-br from-green-400 to-green-600 rounded animate-pulse">
+                <div className="border-t border-white/20 mt-4 pt-4 px-4 space-y-3">
+                  <div className="flex items-center space-x-3 text-sm text-white">
+                    <div className="p-1 bg-gradient-to-br from-green-400 to-green-600 rounded animate-bounce">
                       <Phone className="h-4 w-4 text-white" />
                     </div>
                     <div>
@@ -252,7 +266,7 @@ const Header: React.FC<HeaderProps> = ({ onAuthClick, onCartClick, currentPage, 
                     href="https://maps.app.goo.gl/3CRUtZD1EHv8yQd36" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="flex items-center space-x-3 text-sm text-gray-600 hover:text-orange-600 transition-colors"
+                    className="flex items-center space-x-3 text-sm text-white hover:text-blue-300 transition-colors"
                   >
                     <div className="p-1 bg-gradient-to-br from-blue-400 to-purple-600 rounded animate-ping">
                       <MapPin className="h-4 w-4 text-white" />
