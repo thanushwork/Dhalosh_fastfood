@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ShoppingCart, User, Menu, X, MapPin, Phone, ExternalLink, ChevronDown } from 'lucide-react';
+import { ShoppingCart, User, Menu, X, MapPin, Phone, ExternalLink, ChevronDown, Bell } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 
@@ -108,8 +108,8 @@ const Header: React.FC<HeaderProps> = ({ onAuthClick, onCartClick, currentPage, 
             {/* Contact Info */}
             <div className="hidden xl:flex items-center space-x-6 text-sm">
               <div className="flex items-center space-x-2 text-gray-600 hover:text-orange-600 transition-colors group">
-                <div className="p-2 bg-orange-100 rounded-lg group-hover:bg-orange-200 transition-colors">
-                  <Phone className="h-4 w-4" />
+                <div className="p-2 bg-gradient-to-br from-green-400 to-green-600 rounded-lg group-hover:from-green-500 group-hover:to-green-700 transition-all duration-300 transform group-hover:scale-110 group-hover:rotate-12 shadow-lg group-hover:shadow-xl animate-pulse">
+                  <Phone className="h-4 w-4 text-white animate-bounce" />
                 </div>
                 <div>
                   <p className="font-semibold">Call Now</p>
@@ -122,8 +122,8 @@ const Header: React.FC<HeaderProps> = ({ onAuthClick, onCartClick, currentPage, 
                 rel="noopener noreferrer"
                 className="flex items-center space-x-2 text-gray-600 hover:text-orange-600 transition-colors group"
               >
-                <div className="p-2 bg-blue-100 rounded-lg group-hover:bg-blue-200 transition-colors">
-                  <MapPin className="h-4 w-4" />
+                <div className="p-2 bg-gradient-to-br from-blue-400 to-purple-600 rounded-lg group-hover:from-blue-500 group-hover:to-purple-700 transition-all duration-300 transform group-hover:scale-110 group-hover:-rotate-12 shadow-lg group-hover:shadow-xl">
+                  <MapPin className="h-4 w-4 text-white animate-ping" />
                 </div>
                 <div>
                   <p className="font-semibold">Location</p>
@@ -139,13 +139,21 @@ const Header: React.FC<HeaderProps> = ({ onAuthClick, onCartClick, currentPage, 
               {/* Cart Button */}
               <button
                 onClick={handleCartClick}
-                className="relative p-3 text-gray-600 hover:text-orange-600 transition-all duration-300 rounded-xl hover:bg-orange-50 group"
+                className="relative p-3 text-gray-600 hover:text-orange-600 transition-all duration-300 rounded-xl hover:bg-gradient-to-br hover:from-orange-50 hover:to-red-50 group transform hover:scale-110"
               >
-                <ShoppingCart className="h-6 w-6 group-hover:scale-110 transition-transform duration-300" />
+                <div className="relative">
+                  <ShoppingCart className="h-6 w-6 group-hover:scale-110 transition-transform duration-300 group-hover:text-orange-600" />
+                  {state.items.length > 0 && (
+                    <div className="absolute -inset-1 bg-gradient-to-r from-orange-400 to-red-500 rounded-lg blur opacity-30 group-hover:opacity-50 animate-pulse"></div>
+                  )}
+                </div>
                 {state.items.length > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs rounded-full h-6 w-6 flex items-center justify-center animate-bounce font-bold shadow-lg">
+                  <span className="absolute -top-1 -right-1 bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs rounded-full h-6 w-6 flex items-center justify-center animate-bounce font-bold shadow-lg ring-2 ring-white">
                     {state.items.reduce((sum, item) => sum + item.quantity, 0)}
                   </span>
+                )}
+                {state.items.length > 0 && (
+                  <Bell className="absolute -top-2 -left-2 h-3 w-3 text-yellow-500 animate-ping" />
                 )}
               </button>
 
@@ -153,12 +161,17 @@ const Header: React.FC<HeaderProps> = ({ onAuthClick, onCartClick, currentPage, 
               <div className="relative">
                 <button
                   onClick={() => setActiveDropdown(activeDropdown === 'user' ? null : 'user')}
-                  className="flex items-center space-x-2 p-3 text-gray-600 hover:text-orange-600 transition-all duration-300 rounded-xl hover:bg-orange-50 group"
+                  className="flex items-center space-x-2 p-3 text-gray-600 hover:text-orange-600 transition-all duration-300 rounded-xl hover:bg-gradient-to-br hover:from-orange-50 hover:to-red-50 group transform hover:scale-105"
                 >
                   <div className="relative">
-                    <User className="h-6 w-6 group-hover:scale-110 transition-transform duration-300" />
+                    <div className="relative">
+                      <User className="h-6 w-6 group-hover:scale-110 transition-transform duration-300 group-hover:text-orange-600" />
+                      {isAuthenticated && (
+                        <div className="absolute -inset-1 bg-gradient-to-r from-green-400 to-blue-500 rounded-lg blur opacity-20 group-hover:opacity-40 animate-pulse"></div>
+                      )}
+                    </div>
                     {isAuthenticated && (
-                      <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
+                      <div className="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-r from-green-400 to-green-600 rounded-full border-2 border-white animate-pulse shadow-lg"></div>
                     )}
                   </div>
                   <span className="hidden sm:inline text-sm font-medium">
@@ -197,12 +210,17 @@ const Header: React.FC<HeaderProps> = ({ onAuthClick, onCartClick, currentPage, 
               {/* Mobile Menu Button */}
               <button
                 onClick={toggleMenu}
-                className="lg:hidden p-3 text-gray-600 hover:text-orange-600 transition-all duration-300 rounded-xl hover:bg-orange-50"
+                className="lg:hidden p-3 text-gray-600 hover:text-orange-600 transition-all duration-300 rounded-xl hover:bg-gradient-to-br hover:from-orange-50 hover:to-red-50 transform hover:scale-110"
               >
+                <div className="relative">
                 {isMenuOpen ? 
-                  <X className="h-6 w-6 rotate-90 transition-transform duration-300" /> : 
-                  <Menu className="h-6 w-6 transition-transform duration-300" />
+                  <X className="h-6 w-6 rotate-90 transition-transform duration-300 text-red-500" /> : 
+                  <Menu className="h-6 w-6 transition-transform duration-300 hover:text-orange-600" />
                 }
+                  {!isMenuOpen && (
+                    <div className="absolute -inset-1 bg-gradient-to-r from-orange-400 to-red-500 rounded-lg blur opacity-0 hover:opacity-20 transition-opacity duration-300"></div>
+                  )}
+                </div>
               </button>
             </div>
           </div>
@@ -223,7 +241,9 @@ const Header: React.FC<HeaderProps> = ({ onAuthClick, onCartClick, currentPage, 
                 
                 <div className="border-t border-gray-200 mt-4 pt-4 px-4 space-y-3">
                   <div className="flex items-center space-x-3 text-sm text-gray-600">
-                    <Phone className="h-4 w-4 text-orange-500" />
+                    <div className="p-1 bg-gradient-to-br from-green-400 to-green-600 rounded animate-pulse">
+                      <Phone className="h-4 w-4 text-white" />
+                    </div>
                     <div>
                       <p className="font-semibold">Call: 7299760102 / 9840650939</p>
                     </div>
@@ -234,7 +254,9 @@ const Header: React.FC<HeaderProps> = ({ onAuthClick, onCartClick, currentPage, 
                     rel="noopener noreferrer"
                     className="flex items-center space-x-3 text-sm text-gray-600 hover:text-orange-600 transition-colors"
                   >
-                    <MapPin className="h-4 w-4 text-blue-500" />
+                    <div className="p-1 bg-gradient-to-br from-blue-400 to-purple-600 rounded animate-ping">
+                      <MapPin className="h-4 w-4 text-white" />
+                    </div>
                     <span>View Location on Map</span>
                     <ExternalLink className="h-3 w-3" />
                   </a>

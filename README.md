@@ -47,6 +47,79 @@ A modern, production-ready restaurant ordering website with MySQL database integ
 
 ## 📋 Complete Setup Instructions
 
+### **🚀 Quick Start Guide (FREE Setup)**
+
+Follow these steps to run the project completely FREE:
+
+#### **Step 1: Clone and Setup Project**
+```bash
+# 1. Clone the repository
+git clone <your-repo-url>
+cd dhaloesh-fast-food
+
+# 2. Install frontend dependencies
+npm install
+
+# 3. Setup backend
+cd backend
+npm install
+cd ..
+```
+
+#### **Step 2: FREE Database Setup (PlanetScale)**
+1. **Go to [planetscale.com](https://planetscale.com)**
+2. **Create FREE account** (No credit card required)
+3. **Create new database:**
+   - Database name: `dhaloesh-fastfood`
+   - Region: Choose closest to you
+4. **Get connection details:**
+   - Go to "Connect" tab
+   - Select "Node.js"
+   - Copy the connection string
+
+#### **Step 3: Backend Environment Setup**
+```bash
+# Create backend environment file
+cd backend
+cp .env.example .env
+
+# Edit .env file with your PlanetScale credentials:
+# DB_HOST=your_planetscale_host
+# DB_USER=your_planetscale_username  
+# DB_PASSWORD=your_planetscale_password
+# DB_NAME=dhaloesh-fastfood
+# JWT_SECRET=your_super_secret_jwt_key_here
+# PORT=3001
+```
+
+#### **Step 4: Database Schema Setup**
+1. **Connect to PlanetScale database**
+2. **Run the SQL commands from `supabase/migrations/20250719132825_light_stream.sql`**
+3. **Or use PlanetScale web console to import the schema**
+
+#### **Step 5: Start the Application**
+```bash
+# Terminal 1: Start Backend
+cd backend
+npm run dev
+# Backend will run on http://localhost:3001
+
+# Terminal 2: Start Frontend (new terminal)
+cd .. # go back to root directory
+echo "VITE_API_URL=http://localhost:3001/api" > .env
+npm run dev
+# Frontend will run on http://localhost:5173
+```
+
+#### **Step 6: Test the Application**
+1. **Open browser:** http://localhost:5173
+2. **Test admin login:**
+   - Email: admin@dhaloesh.com
+   - Password: admin123
+3. **Create customer account and place test order**
+
+---
+
 ### **Step 1: Database Setup (MySQL)**
 
 #### Option A: Local MySQL Installation
@@ -333,12 +406,117 @@ Orders are automatically sent to WhatsApp number: **9840650939**
    - Publish directory: `dist`
    - Environment variables: `VITE_API_URL=your_backend_url`
 
-#### Backend (Railway - FREE)
+#### Backend (Railway - FREE) 
 1. **Deploy on Railway:**
    - Go to [railway.app](https://railway.app)
    - Connect GitHub repository
    - Add environment variables
    - Deploy automatically
+
+#### Alternative Backend (Render - FREE)
+1. **Deploy on Render:**
+   - Go to [render.com](https://render.com)
+   - Connect GitHub repository
+   - Select "Web Service"
+   - Build command: `cd backend && npm install`
+   - Start command: `cd backend && npm start`
+   - Add environment variables
+
+#### Alternative Backend (Vercel - FREE)
+1. **Deploy on Vercel:**
+   - Go to [vercel.com](https://vercel.com)
+   - Connect GitHub repository
+   - Framework: Other
+   - Root directory: `backend`
+   - Build command: `npm install`
+   - Output directory: Leave empty
+   - Install command: `npm install`
+
+### **🆓 FREE MySQL Database Options**
+
+#### **Option 1: PlanetScale (Recommended - FREE)**
+- **Website:** [planetscale.com](https://planetscale.com)
+- **Free Tier:** 1 database, 1GB storage, 1 billion reads/month
+- **Setup Time:** 5 minutes
+- **No Credit Card Required**
+
+#### **Option 2: Railway MySQL (FREE)**
+- **Website:** [railway.app](https://railway.app)
+- **Free Tier:** $5 credit monthly (enough for small apps)
+- **Setup Time:** 3 minutes
+- **GitHub login required**
+
+#### **Option 3: Aiven MySQL (FREE Trial)**
+- **Website:** [aiven.io](https://aiven.io)
+- **Free Trial:** 1 month free
+- **Setup Time:** 5 minutes
+- **Credit card required (but not charged during trial)**
+
+#### **Option 4: FreeSQLDatabase (FREE)**
+- **Website:** [freesqldatabase.com](https://freesqldatabase.com)
+- **Free Tier:** 5MB storage (good for testing)
+- **Setup Time:** 2 minutes
+- **No registration required**
+
+### **💰 Cost Breakdown for FREE Setup**
+
+#### **100% FREE Setup (Perfect for Small Business)**
+- **Database:** PlanetScale Free (1GB storage)
+- **Frontend:** Netlify Free (100GB bandwidth)
+- **Backend:** Railway Free ($5 monthly credit)
+- **Domain:** Use provided subdomain
+- **Total Cost:** ₹0/month ✅
+
+#### **Limitations of FREE Setup:**
+- PlanetScale: 1GB storage limit
+- Netlify: 100GB bandwidth/month
+- Railway: $5 credit/month (usually enough)
+- Custom domain not included
+
+### **🔧 Troubleshooting Common Issues**
+
+#### **Backend Won't Start:**
+```bash
+# Check if all dependencies are installed
+cd backend
+npm install
+
+# Check environment variables
+cat .env
+
+# Test database connection
+node -e "console.log('Testing DB connection...')"
+```
+
+#### **Frontend Can't Connect to Backend:**
+```bash
+# Check if backend is running
+curl http://localhost:3001/api/menu
+
+# Check frontend environment
+cat .env
+# Should contain: VITE_API_URL=http://localhost:3001/api
+```
+
+#### **Database Connection Issues:**
+1. **Verify database credentials in backend/.env**
+2. **Check if database server is running**
+3. **Ensure database schema is imported**
+4. **Test connection from database client**
+
+### **📱 Mobile Testing**
+```bash
+# To test on mobile devices in same network
+# Find your local IP address
+ipconfig getifaddr en0  # macOS
+ip route get 1.2.3.4 | awk '{print $7}'  # Linux
+ipconfig | findstr IPv4  # Windows
+
+# Update frontend .env
+VITE_API_URL=http://YOUR_LOCAL_IP:3001/api
+
+# Access from mobile: http://YOUR_LOCAL_IP:5173
+```
 
 ### **Production Hosting**
 
